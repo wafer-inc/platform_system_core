@@ -229,6 +229,12 @@ message SnapshotUpdateStatus {
 
     // Enable direct reads from source device
     bool o_direct = 12;
+
+    // Number of cow operations to be merged at once
+    uint32 cow_op_merge_size = 13;
+
+    // Number of worker threads to serve I/O from dm-user
+    uint32 num_worker_threads = 14;
 }
 
 // Next: 10

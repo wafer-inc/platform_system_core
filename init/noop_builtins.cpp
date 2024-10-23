@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 The Android Open Source Project
+ * Copyright (C) 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-#pragma once
+// Note that parser will perform arity checks only.
 
-#include <cstdint>
+#include <android-base/result.h>
 
-#include <processgroup/format/cgroup_controller.h>
+#include "builtin_arguments.h"
+#include "builtins.h"
 
-namespace android {
-namespace cgrouprc {
-namespace format {
+namespace android::init {
 
-struct CgroupFile {
-    uint32_t version_;
-    uint32_t controller_count_;
-    CgroupController controllers_[];
+static base::Result<void> check_stub(const BuiltinArguments&) {
+    return {};
+}
 
-    static constexpr uint32_t FILE_VERSION_1 = 1;
-    static constexpr uint32_t FILE_CURR_VERSION = FILE_VERSION_1;
-};
+#include "noop_builtin_function_map.h"
 
-}  // namespace format
-}  // namespace cgrouprc
-}  // namespace android
+}  // namespace android::init

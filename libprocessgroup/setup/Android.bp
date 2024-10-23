@@ -33,11 +33,10 @@ cc_library_shared {
         "libjsoncpp",
     ],
     static_libs: [
-        "libcgrouprc_format",
+        "libprocessgroup_util",
     ],
     header_libs: [
         "libprocessgroup_headers",
-        "libprocessgroup_util",
     ],
     export_header_lib_headers: [
         "libprocessgroup_headers",

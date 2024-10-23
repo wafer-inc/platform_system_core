@@ -15,6 +15,7 @@
 //
 
 package {
+    default_team: "trendy_team_android_kernel",
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
@@ -42,6 +43,7 @@ cc_library_static {
     static_libs: [
         "libcutils_sockets",
         "libfs_mgr_file_wait",
+        "libdm",
     ],
     shared_libs: [
         "libbase",
@@ -84,9 +86,9 @@ cc_library_static {
         "libsnapshot_cow",
         "liburing",
         "libprocessgroup",
+        "libprocessgroup_util",
         "libjsoncpp",
         "libcgrouprc",
-        "libcgrouprc_format",
     ],
     include_dirs: ["bionic/libc/kernel"],
     export_include_dirs: ["include"],
@@ -128,9 +130,9 @@ cc_defaults {
         "libsnapshot_cow",
         "libsnapuserd",
         "libprocessgroup",
+        "libprocessgroup_util",
         "libjsoncpp",
         "libcgrouprc",
-        "libcgrouprc_format",
         "libsnapuserd_client",
         "libz",
         "liblz4",
@@ -169,7 +171,7 @@ cc_binary {
     recovery_available: true,
 }
 
-// This target will install to /system/bin/snapuserd_ramdisk
+// This target will install to /system/bin/snapuserd_ramdisk 
 // It will also create a symblink on /system/bin/snapuserd that point to
 // /system/bin/snapuserd_ramdisk .
 // This way, init can check if generic ramdisk copy exists.
@@ -220,9 +222,9 @@ cc_defaults {
         "libsnapshot_cow",
         "libsnapuserd",
         "libprocessgroup",
+        "libprocessgroup_util",
         "libjsoncpp",
         "libcgrouprc",
-        "libcgrouprc_format",
         "liburing",
         "libz",
     ],
@@ -238,9 +240,19 @@ cc_defaults {
     test_options: {
         min_shipping_api_level: 30,
     },
+
+    compile_multilib: "both",
+    multilib: {
+        lib32: {
+            suffix: "32",
+        },
+        lib64: {
+            suffix: "64",
+        },
+    },
+
     auto_gen_config: true,
     require_root: true,
-    compile_multilib: "first",
 }
 
 cc_test {
@@ -248,7 +260,7 @@ cc_test {
     defaults: ["snapuserd_test_defaults"],
     host_supported: true,
     test_suites: [
-        "device-tests",
+        "general-tests",
     ],
     test_options: {
         test_runner_options: [
@@ -267,6 +279,10 @@ cc_test {
     test_suites: [
         "vts",
     ],
+    test_options: {
+        // VABC mandatory in Android T per VSR.
+        min_shipping_api_level: 32,
+    },
 }
 
 cc_binary_host {
@@ -304,7 +320,6 @@ cc_binary_host {
         "libprocessgroup",
         "libjsoncpp",
         "libcgrouprc",
-        "libcgrouprc_format",
         "liburing",
         "libz",
     ],

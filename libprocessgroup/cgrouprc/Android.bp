@@ -32,8 +32,8 @@ cc_library {
         symbol_file: "libcgrouprc.map.txt",
     },
     srcs: [
-        "cgroup_controller.cpp",
-        "cgroup_file.cpp",
+        "a_cgroup_controller.cpp",
+        "a_cgroup_file.cpp",
     ],
     cflags: [
         "-Wall",
@@ -49,7 +49,8 @@ cc_library {
         "libbase",
     ],
     static_libs: [
-        "libcgrouprc_format",
+        "libjsoncpp",
+        "libprocessgroup_util",
     ],
     stubs: {
         symbol_file: "libcgrouprc.map.txt",
