@@ -18,6 +18,8 @@
 #define ANDROID_STRING8_H
 
 #include <iostream>
+#include <string>
+#include <string_view>
 
 #include <utils/Errors.h>
 #include <utils/Unicode.h>
@@ -25,16 +27,6 @@
 
 #include <string.h> // for strcmp
 #include <stdarg.h>
-
-#if __has_include(<string>)
-#include <string>
-#define HAS_STRING
-#endif
-
-#if __has_include(<string_view>)
-#include <string_view>
-#define HAS_STRING_VIEW
-#endif
 
 #if __cplusplus >= 202002L
 #include <compare>
@@ -57,9 +49,7 @@ public:
                                 String8(const String8& o);
     explicit                    String8(const char* o);
     explicit                    String8(const char* o, size_t numChars);
-#ifdef HAS_STRING_VIEW
     explicit                    String8(std::string_view o);
-#endif
 
     explicit                    String8(const String16& o);
     explicit                    String8(const char16_t* o);
@@ -129,9 +119,7 @@ public:
 
     inline                      operator const char*() const;
 
-#ifdef HAS_STRING_VIEW
     inline explicit             operator std::string_view() const;
-#endif
 
             char*               lockBuffer(size_t size);
             void                unlockBuffer();
@@ -376,21 +364,15 @@ inline String8::operator const char*() const
     return mString;
 }
 
-#ifdef HAS_STRING_VIEW
-
 inline String8::String8(std::string_view o) : String8(o.data(), o.length()) { }
 
 inline String8::operator std::string_view() const
 {
     return {mString, length()};
 }
-#endif
 
 }  // namespace android
 
 // ---------------------------------------------------------------------------
-
-#undef HAS_STRING
-#undef HAS_STRING_VIEW
 
 #endif // ANDROID_STRING8_H
